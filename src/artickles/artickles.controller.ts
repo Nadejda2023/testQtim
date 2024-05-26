@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -36,6 +38,14 @@ export class ArticklesController {
     res.status(HttpStatus.OK).json(foundAllUsers);
   }
 
+  @ApiOperation({ summary: 'Показать статью по индефикатору' })
+  @ApiResponse({ status: 200, type: Artickle })
+  //@UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findArticklesById(@Param('id') artickleId: number) {
+    return await this.articklesService.getArticklesById(artickleId);
+  }
+
   @ApiOperation({ summary: 'Создание статьи' })
   @ApiResponse({ status: 200, type: Artickle })
   @UsePipes(ValidationPipe)
@@ -47,13 +57,22 @@ export class ArticklesController {
   }
 
   @ApiOperation({ summary: 'Обновление статьи' })
-  @ApiResponse({ status: 200, type: Artickle })
+  @ApiResponse({ status: 204, type: Artickle })
   @UsePipes(ValidationPipe)
   @Put(':id')
+  @HttpCode(204)
   async updateArtickle(
     @Param('id') artickleId: number,
     @Body() updateDto: UpdateArtickleDto,
-  ): Promise<Artickle> {
+  ) {
     return this.articklesService.updateArtickleById(artickleId, updateDto);
+  }
+
+  @ApiOperation({ summary: 'Удалить статью по индефикатору' })
+  @ApiResponse({ status: 204, type: Artickle })
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteArticklesById(@Param('id') artickleId: number) {
+    return await this.articklesService.deleteArticklesById(artickleId);
   }
 }

@@ -47,17 +47,38 @@ export class ArticklesService {
     };
   }
 
+  async getArticklesById(id: number) {
+    const artickle = await this.artickleRepository.findOne({
+      where: { id: id },
+      relations: ['author'],
+    });
+    if (!artickle) {
+      throw new NotFoundException();
+    } else {
+      return artickle;
+    }
+  }
+  async deleteArticklesById(id: number) {
+    const result = await this.artickleRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException();
+    }
+    return true;
+  }
+
   async updateArtickleById(id: number, dto: UpdateArtickleDto) {
     const artickle = await this.artickleRepository.findOne({
       where: { id: id },
+      //relations: ['author'],
     });
     if (!artickle) throw new NotFoundException();
     await this.artickleRepository.update(id, {
       title: dto.title,
       description: dto.description,
-      createdAt: dto.createdAt,
+      createdAt: new Date().toISOString(),
       author: artickle.author,
     });
-    return await this.artickleRepository.findOne({ where: { id: id } });
+
+    return true;
   }
 }
