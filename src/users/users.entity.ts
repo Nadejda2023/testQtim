@@ -30,3 +30,14 @@ export class User {
   @OneToMany(() => Artickle, (artickle) => artickle.author)
   artickle: Artickle[];
 }
+
+export class UserViewModel {
+  @ApiProperty({ example: '1', description: 'идентификатор пользователя' })
+  id: number;
+
+  @ApiProperty({ example: 'Надя', description: 'Имя пользователя' })
+  name: string;
+
+  @ApiProperty({ example: 'fsklever@yahoo.com', description: 'Почта' })
+  email: string;
+}

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.user.dto';
-import { User } from './users.entity';
+import { User, UserViewModel } from './users.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ValidationPipe } from 'src/pipes/validation.pipies';
 
@@ -19,7 +19,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Показать всех пользователей' })
-  @ApiResponse({ status: 200, type: [User] })
+  @ApiResponse({ status: 200, type: [UserViewModel] })
   //@UseGuards(JwtAuthGuard)
   @Get()
   findAllUsers() {
